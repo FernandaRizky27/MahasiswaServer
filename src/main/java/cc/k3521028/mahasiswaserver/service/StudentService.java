@@ -69,4 +69,21 @@ public class StudentService {
     public void deleteStudent(Long id) {
         studentRepository.deleteById(id);
     }
+
+    public StudentDto updateStudent(Long id, StudentDto studentDto) {
+        StudentEntity studentEntity = new StudentEntity();
+        studentEntity.setId(id);
+        studentEntity.setNama(studentDto.getNama());
+        studentEntity.setNim(studentDto.getNim());
+        studentEntity.setAlamat(studentDto.getAlamat());
+        studentEntity.setUsername(studentDto.getUsername());
+        studentEntity.setEmail(studentDto.getEmail());
+        StudentEntity updatedStudentEntity = studentRepository.save(studentEntity);
+        studentDto.setNama(updatedStudentEntity.getNama());
+        studentDto.setNim(updatedStudentEntity.getNim());
+        studentDto.setAlamat(updatedStudentEntity.getAlamat());
+        studentDto.setUsername(updatedStudentEntity.getUsername());
+        studentDto.setEmail(updatedStudentEntity.getEmail());
+        return studentDto;
+    }
 }

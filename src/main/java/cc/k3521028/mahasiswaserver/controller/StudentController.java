@@ -54,13 +54,30 @@ public class StudentController {
 
     @GetMapping("/delete/{id}")
     public ResponseEntity<OutputDto<StudentDto>> deleteStudentById(@PathVariable("id") Long id) {
-        StudentDto studentDto = studentService.getStudent(id);
+        StudentDto studentDto = new StudentDto();
         OutputDto<StudentDto> outputDto = new OutputDto<>();
-        studentService.deleteStudent(id);
-        studentDto = studentService.getStudent(id);
-        outputDto.setData(studentDto);
-        outputDto.setMessage("Student Deleted");
+        try {
+            studentService.deleteStudent(id);
+            studentDto = studentService.getStudent(id);
+            outputDto.setData(studentDto);
+            outputDto.setMessage("Student Deleted");
+            return ResponseEntity.ok(outputDto);
+        }catch (Exception e) {
+            outputDto.setData(studentDto);
+            outputDto.setMessage("Student Not Found");
+            return ResponseEntity.ok(outputDto);
+        }
+
+    }
+
+    @PostMapping("/update/{id}")
+    public ResponseEntity<OutputDto<StudentDto>> updateStudentById(@PathVariable("id") Long id, @RequestBody StudentDto studentDto) {
+        StudentDto updateById = studentService.updateStudent(id, studentDto);
+        OutputDto<StudentDto> outputDto = new OutputDto<>();
+        outputDto.setData(updateById);
+        outputDto.setMessage("Student Update Successful");
         return ResponseEntity.ok(outputDto);
+
     }
 
 }
