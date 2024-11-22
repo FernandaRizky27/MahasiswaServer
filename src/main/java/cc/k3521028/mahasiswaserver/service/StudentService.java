@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StudentService {
@@ -47,5 +48,25 @@ public class StudentService {
             studentDtoList.add(studentDto);
         }
         return studentDtoList;
+    }
+
+    public StudentDto getStudent(Long id) {
+        StudentDto studentDto = new StudentDto();
+        Optional<StudentEntity>studentCheck = studentRepository.findById(id);
+        if (studentCheck.isPresent()) {
+            StudentEntity studentEntity = studentCheck.get();
+            studentDto.setNama(studentEntity.getNama());
+            studentDto.setNim(studentEntity.getNim());
+            studentDto.setAlamat(studentEntity.getAlamat());
+            studentDto.setUsername(studentEntity.getUsername());
+            studentDto.setEmail(studentEntity.getEmail());
+            return studentDto;
+        } else {
+            return null;
+        }
+    }
+
+    public void deleteStudent(Long id) {
+        studentRepository.deleteById(id);
     }
 }

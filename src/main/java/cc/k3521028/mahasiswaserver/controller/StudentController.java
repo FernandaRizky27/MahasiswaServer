@@ -37,4 +37,30 @@ public class StudentController {
 
 
     }
+
+    @GetMapping("/find/{id}")
+    public ResponseEntity<OutputDto<StudentDto>> findStudentById(@PathVariable("id") Long id) {
+        StudentDto studentDto = studentService.getStudent(id);
+        OutputDto<StudentDto> outputDto = new OutputDto<>();
+        outputDto.setData(studentDto);
+        if (studentDto == null) {
+            outputDto.setMessage("Student Not Found");
+        } else {
+            outputDto.setMessage("Student Found");
+        }
+
+        return ResponseEntity.ok(outputDto);
+    }
+
+    @GetMapping("/delete/{id}")
+    public ResponseEntity<OutputDto<StudentDto>> deleteStudentById(@PathVariable("id") Long id) {
+        StudentDto studentDto = studentService.getStudent(id);
+        OutputDto<StudentDto> outputDto = new OutputDto<>();
+        studentService.deleteStudent(id);
+        studentDto = studentService.getStudent(id);
+        outputDto.setData(studentDto);
+        outputDto.setMessage("Student Deleted");
+        return ResponseEntity.ok(outputDto);
+    }
+
 }
